@@ -694,7 +694,7 @@ static void help(int argc, char * const argv[])
     fprintf( stderr, "-4        \tUse IPv4 network (default)\n" );
     fprintf( stderr, "-6        \tUse IPv6 network\n" );
 #ifndef _WIN32
-    fprintf( stderr, "-t        \tUse UNIX management socket\n" );
+    fprintf( stderr, "-t <port>\tSet management UDP port to <port> (default = 5645)\n" );
 #endif
 #if defined(N2N_HAVE_DAEMON)
     fprintf( stderr, "-f        \tRun in foreground.\n" );
@@ -723,7 +723,10 @@ int main( int argc, char * const argv[] )
 {
     n2n_sn_t sss;
     bool ipv4 = false, ipv6 = false;
+
+#ifndef _WIN32
     char mgmt_path[108] = "";
+#endif
 
 #ifndef _WIN32
     /* stdout is connected to journald, so don't print data/time */
@@ -758,7 +761,9 @@ int main( int argc, char * const argv[] )
                 sss.lport = atoi(optarg);
                 break;
             case 't':
+#ifndef _WIN32
                 strncpy(mgmt_path, optarg, 108);
+#endif
                 break;
             case 'f': /* foreground */
                 sss.daemon = 0;
@@ -856,6 +861,7 @@ int main( int argc, char * const argv[] )
 #endif
         exit(-2);
     }
+#ifndef _WIN32
     else if (mgmt_path[0] == '\0')
     {
         traceEvent( TRACE_NORMAL, "supernode is listening on UDP %u (management)", N2N_SN_MGMT_PORT );
@@ -864,12 +870,11 @@ int main( int argc, char * const argv[] )
     {
         traceEvent( TRACE_NORMAL, "supernode is listening on datagram %s (management)", mgmt_path);
     }
-
+#endif // _WIN32
     traceEvent(TRACE_NORMAL, "supernode started");
 
     return run_loop(&sss);
 }
-
 
 /** Long lived processing entry point. Split out from main to simply
  *  daemonisation on some platforms. */

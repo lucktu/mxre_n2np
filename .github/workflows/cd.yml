@@ -22,13 +22,11 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          # 暂时只编译这一个目标
           - target: x86_64-linux-musl_AES
             os: ubuntu-latest
             URL: x86_64-linux-musl
             OPENSSL_TARGET: linux-x86_64
 
-          # 以下目标暂时注释，不编译
           # - target: apple-mac_AES
           #   os: macos-latest
           # - target: apple-mac
@@ -39,11 +37,11 @@ jobs:
           #   ARCH: x64
           #   OPENSSL_TARGET: VC-WIN64A
           #   MSVC_ARCH: x64
-          # - target: x86_64-pc-windows
-          #   os: windows-latest
-          #   ARCH: x64
-          #   OPENSSL_TARGET: VC-WIN64A
-          #   MSVC_ARCH: x64
+          - target: x86_64-pc-windows
+            os: windows-latest
+            ARCH: x64
+            OPENSSL_TARGET: VC-WIN64A
+            MSVC_ARCH: x64
 
           # - target: i686-pc-windows_AES
           #   os: windows-latest
@@ -65,10 +63,10 @@ jobs:
           #   URL: aarch64-linux-musl
           #   OPENSSL_TARGET: linux-aarch64
 
-          # - target: x86_64-linux-musl
-          #   os: ubuntu-latest
-          #   URL: x86_64-linux-musl
-          #   OPENSSL_TARGET: linux-x86_64
+          - target: x86_64-linux-musl
+            os: ubuntu-latest
+            URL: x86_64-linux-musl
+            OPENSSL_TARGET: linux-x86_64
 
           # - target: i686-linux-musl_AES
           #   os: ubuntu-latest
@@ -97,41 +95,41 @@ jobs:
           #   URL: armv7m-linux-musleabi
           #   OPENSSL_TARGET: linux-armv4
 
-          # - target: arm-linux-musleabihf_AES
-          #   os: ubuntu-latest
-          #   URL: arm-linux-musleabihf
-          #   OPENSSL_TARGET: linux-armv4
-          # - target: arm-linux-musleabihf
-          #   os: ubuntu-latest
-          #   URL: arm-linux-musleabihf
-          #   OPENSSL_TARGET: linux-armv4
+          - target: arm-linux-musleabihf_AES
+            os: ubuntu-latest
+            URL: arm-linux-musleabihf
+            OPENSSL_TARGET: linux-armv4
+          - target: arm-linux-musleabihf
+            os: ubuntu-latest
+            URL: arm-linux-musleabihf
+            OPENSSL_TARGET: linux-armv4
 
-          # - target: arm-linux-musleabi_AES
-          #   os: ubuntu-latest
-          #   URL: arm-linux-musleabi
-          #   OPENSSL_TARGET: linux-armv4
-          # - target: arm-linux-musleabi
-          #   os: ubuntu-latest
-          #   URL: arm-linux-musleabi
-          #   OPENSSL_TARGET: linux-armv4
+          - target: arm-linux-musleabi_AES
+            os: ubuntu-latest
+            URL: arm-linux-musleabi
+            OPENSSL_TARGET: linux-armv4
+          - target: arm-linux-musleabi
+            os: ubuntu-latest
+            URL: arm-linux-musleabi
+            OPENSSL_TARGET: linux-armv4
 
-          # - target: mipsel-linux-musl_AES
-          #   os: ubuntu-latest
-          #   URL: mipsel-linux-muslsf
-          #   OPENSSL_TARGET: linux-mips32
-          # - target: mipsel-linux-musl
-          #   os: ubuntu-latest
-          #   URL: mipsel-linux-muslsf
-          #   OPENSSL_TARGET: linux-mips32
+          - target: mipsel-linux-musl_AES
+            os: ubuntu-latest
+            URL: mipsel-linux-muslsf
+            OPENSSL_TARGET: linux-mips32
+          - target: mipsel-linux-musl
+            os: ubuntu-latest
+            URL: mipsel-linux-muslsf
+            OPENSSL_TARGET: linux-mips32
 
-          # - target: mips-linux-musl_AES
-          #   os: ubuntu-latest
-          #   URL: mips-linux-muslsf
-          #   OPENSSL_TARGET: linux-mips32
-          # - target: mips-linux-musl
-          #   os: ubuntu-latest
-          #   URL: mips-linux-muslsf
-          #   OPENSSL_TARGET: linux-mips32
+          - target: mips-linux-musl_AES
+            os: ubuntu-latest
+            URL: mips-linux-muslsf
+            OPENSSL_TARGET: linux-mips32
+          - target: mips-linux-musl
+            os: ubuntu-latest
+            URL: mips-linux-muslsf
+            OPENSSL_TARGET: linux-mips32
 
     runs-on: ${{ matrix.os }}
     env:

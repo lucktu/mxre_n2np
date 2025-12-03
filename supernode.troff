@@ -38,10 +38,10 @@ disable daemon mode (UNIX) and run in foreground.
 .B supernode -l 7654 -v
 Start supernode listening on UDP port 7654 with verbose output.
 .PP
-.SH REMARKS
-Additionally supernode opens UDP port 5645 on the IPv4 loopback interface (127.0.0.1).
-On this management socket statistical information can be queried, i.e. using
-.B socat(1).
+.SH REMARKS  
+Additionally supernode opens UDP port 5645 on the IPv4 loopback interface (127.0.0.1)  
+by default. The management port can be changed with the -t option. On this management  
+socket statistical information can be queried, i.e. using .B socat(1). 
 .SH RESTART
 When supernode restarts it loses all registration information from associated
 edge nodes. It can take up to five minutes for the edge nodes to re-register and
