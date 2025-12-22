@@ -98,7 +98,7 @@ char const* gcrypt_version;
 
 typedef char n2n_sn_name_t[N2N_EDGE_SN_HOST_SIZE];
 
-#define N2N_EDGE_NUM_SUPERNODES 2
+#define N2N_EDGE_NUM_SUPERNODES 3
 #define N2N_EDGE_SUP_ATTEMPTS   3       /* Number of failed attmpts before moving on to next supernode. */
 
 
@@ -653,7 +653,7 @@ static void help() {
     printf("                         : '-B1' can also be used as '-B 1' (for better compatibility)\n");
     printf("-k <encrypt key>         | Encryption key (ASCII, max 32) - also N2N_KEY=<encrypt key>. Not with -K.\n");
     printf("-K <key file>            | Specify a key schedule file to load. Not with -k.\n");
-    printf("-l <supernode host:port> | Supernode IP:port\n");
+    printf("-l <supernode host:port> | Supernode IP:port (default ouno.eu.org:10084)\n");
     printf("-4/-6                    | Resolve supernode DNS name as IPv4 or IPv6 (default: auto)\n");
     printf("-p <local port>          | Fixed local UDP port.\n");
 #ifndef _WIN32
@@ -2736,6 +2736,12 @@ if (argc > 1 && argv[1][0] != '-' && access(argv[1], R_OK) == 0) {
         } /* end switch */
     }
 
+    // Only add default if no user supernodes specified
+    if (eee.sn_num == 0) {
+        strcpy(eee.sn_ip_array[0], "ouno.eu.org:10084");
+        eee.sn_num = 1;
+    }
+
 #ifdef HAVE_LIBCAP
     /* set effective capability to set uid/gid */
     caps = cap_init();
@@ -2786,7 +2792,11 @@ if (argc > 1 && argv[1][0] != '-' && access(argv[1], R_OK) == 0) {
 #endif /* #ifdef N2N_HAVE_DAEMON */
     traceEvent( TRACE_NORMAL, "Starting n2n edge %s %s", n2n_sw_version, n2n_sw_buildDate );
 
-    for (int i = 0; i< N2N_EDGE_NUM_SUPERNODES; ++i ) {
+    for (int i = 0; i< eee.sn_num; ++i) {
+        /* Skip the default supernode (last one if it matches default) */
+        if (strcmp(eee.sn_ip_array[i], "ouno.eu.org:10084") == 0) {
+            continue; // Skip displaying default
+        }
         traceEvent( TRACE_NORMAL, "supernode %u => %s\n", i, (eee.sn_ip_array[i]) );
     }
 
